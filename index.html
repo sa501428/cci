@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platelet Bump Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Platelet Bump Calculator</h1>
+        </header>
+
+        <div class="calculator-grid">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Input</h2>
+                <div class="input-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" min="0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" min="0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="plateletUnits">Platelet Units (×10¹¹)</label>
+                    <input type="number" id="plateletUnits" min="0" value="3" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="transfusionData">Transfusion Data</label>
+                    <textarea id="transfusionData" placeholder="MM/DD/YY HHMM to HHMM"></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="plateletCounts">Platelet Counts</label>
+                    <textarea id="plateletCounts" placeholder="MM/DD/YY HH:MM&#10;PLT: XXX"></textarea>
+                </div>
+                <button id="settingsButton" class="btn">Settings</button>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="plot">Plot</button>
+                    <button class="tab-button" data-tab="summary">Summary</button>
+                    <button class="tab-button" data-tab="table">Table</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="plot" class="tab-pane active">
+                        <button id="resetZoom" class="btn">Reset Zoom</button>
+                        <div class="chart-container"></div>
+                    </div>
+                    
+                    <div id="summary" class="tab-pane">
+                        <div class="results-summary">
+                            <div id="summaryText" class="summary-content"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="table" class="tab-pane">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date/Time</th>
+                                    <th>Pre-Count</th>
+                                    <th>Post-Count</th>
+                                    <th>CCI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Time Settings</h2>
+            <div class="settings-grid">
+                <div class="input-group">
+                    <label for="minLookback">Minimum Lookback (hours)</label>
+                    <input type="number" id="minLookback" min="0" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="maxLookback">Maximum Lookback (hours)</label>
+                    <input type="number" id="maxLookback" min="1" value="36">
+                </div>
+                <div class="input-group">
+                    <label for="minAfter">Minimum After (minutes)</label>
+                    <input type="number" id="minAfter" min="1" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="maxAfter">Maximum After (minutes)</label>
+                    <input type="number" id="maxAfter" min="1" value="120">
+                </div>
+            </div>
+            <button id="saveSettings" class="btn">Save Settings</button>
+        </div>
+    </div>
+
+    <script src="js/calculator.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
