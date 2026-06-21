@@ -25,8 +25,13 @@ class PlateletCalculator {
         while ((match = regex.exec(text)) !== null) {
             const [_, date, startTime, endTime] = match;
             const startDateTime = this.parseDateTime(date, startTime);
-            const endDateTime = this.parseDateTime(date, endTime);
-            
+            let endDateTime = this.parseDateTime(date, endTime);
+
+            // If end is not after start, the transfusion crossed midnight — advance end by one day
+            if (endDateTime <= startDateTime) {
+                endDateTime = new Date(endDateTime.getTime() + 24 * 60 * 60 * 1000);
+            }
+
             transfusions.push({
                 date,
                 startTime,
