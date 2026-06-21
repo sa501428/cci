@@ -72,6 +72,7 @@ class PlateletApp {
     }
 
     calculate() {
+        const errorEl = document.getElementById('calcError');
         try {
             const weight = parseFloat(document.getElementById('weight').value);
             const height = parseFloat(document.getElementById('height').value);
@@ -86,7 +87,8 @@ class PlateletApp {
             const counts = this.calculator.parsePlateletCounts(plateletText);
 
             const results = this.processTransfusions(transfusions, counts, bsa, plateletUnits);
-            
+
+            errorEl.style.display = 'none';
             this.updateResults(results);
             this.chart.createChart({
                 counts: counts.sort((a, b) => a.dateTime - b.dateTime),
@@ -94,7 +96,8 @@ class PlateletApp {
                 results
             });
         } catch (error) {
-            // Handle error silently or show user-friendly message if needed
+            errorEl.textContent = `Error: ${error.message}`;
+            errorEl.style.display = 'block';
         }
     }
 
@@ -177,7 +180,7 @@ class PlateletApp {
                 <td>${result.transfusion.date} ${result.transfusion.endTime}</td>
                 <td>${result.preCount ? result.preCount.count : '-'}</td>
                 <td>${result.postCount ? result.postCount.count : '-'}</td>
-                <td>${result.cci ? Math.round(result.cci) : '-'}</td>
+                <td>${result.cci !== null ? Math.round(result.cci) : '-'}</td>
             `;
             tbody.appendChild(row);
         });
@@ -187,7 +190,7 @@ class PlateletApp {
         return `${result.transfusion.date} ${result.transfusion.endTime}: ` +
             `Pre=${result.preCount ? result.preCount.count : '-'} ` +
             `Post=${result.postCount ? result.postCount.count : '-'} ` +
-            `CCI=${result.cci ? Math.round(result.cci) : '-'}`;
+            `CCI=${result.cci !== null ? Math.round(result.cci) : '-'}`;
     }
 }
 
